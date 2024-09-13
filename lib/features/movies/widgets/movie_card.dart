@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:imdb_movies_app/consts/api/api_path.dart';
 import 'package:imdb_movies_app/consts/assets/assets_path.dart';
+import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
 import 'package:imdb_movies_app/styles/colors.dart';
 
 class MovieCard extends StatefulWidget {
-  const MovieCard({super.key});
+  const MovieCard({required this.movieData, super.key});
+
+  final Results movieData;
 
   @override
   State<MovieCard> createState() => _MovieCardState();
@@ -15,6 +19,7 @@ class MovieCard extends StatefulWidget {
 class _MovieCardState extends State<MovieCard> {
   @override
   Widget build(BuildContext context) {
+    print('${widget.movieData.posterPath}');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppDimens.smallSpacing),
       child: Row(
@@ -28,7 +33,7 @@ class _MovieCardState extends State<MovieCard> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(AppDimens.minBorderRadius),
                   child: Image.network(
-                    'https://images.moviesanywhere.com/265d2dfeed8bb1f9017389971831b00c/c8711a65-2434-4dd1-9548-00e363794409.jpg',
+                    '${ApiPath.POSTER_BASE_URL}${widget.movieData.posterPath}',
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
@@ -49,7 +54,7 @@ class _MovieCardState extends State<MovieCard> {
                       children: [
                         SizedBox(
                           child: Text(
-                            'Green Book Movie',
+                            '${widget.movieData.title}',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: AppDimens.mediumFontSize,
@@ -73,7 +78,7 @@ class _MovieCardState extends State<MovieCard> {
                                 width: 5,
                               ),
                               Text(
-                                '8.2 / 10 IMDb',
+                                '${widget.movieData.voteAverage} / 10 IMDb',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: AppDimens.smallFontSize,

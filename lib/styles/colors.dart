@@ -11,6 +11,7 @@ class AppColorsLight {
   static const primaryCheckedColor = Color(0xFFEC9B3E);
   static const backgroundColor = Color(0xFF0E1324);
   static const genreBackgroundColor = Color(0xFF3a2e29);
+  static const bottomNavigationBackgroundColor = Color(0xFF010510);
 }
 
 class AppColorsDark {

@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:imdb_movies_app/config/router/router_paths.dart';
-import 'package:imdb_movies_app/features/movies/movies_screen.dart';
+import 'package:imdb_movies_app/features/movies/views/popular_movies/movies_screen.dart';
 
 final List<GoRoute> appRoutes = [
   GoRoute(

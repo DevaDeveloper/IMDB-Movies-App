@@ -17,7 +17,7 @@ class AppDimens {
   static const double extraLargePadding = 200.0;
 
   // Font sizes
-  static double smallFontSize = 11.0.sp;
+  static double smallFontSize = 12.0.sp;
   static double mediumFontSize = 15.0.sp;
   static double secondaryMediumFontSize = 20.0.sp;
   static double largeFontSize = 22.0.sp;

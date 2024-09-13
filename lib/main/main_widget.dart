@@ -48,16 +48,10 @@ class _MainWidgetState extends State<MainWidget> with WidgetsBindingObserver {
     return MultiBlocListener(
       listeners: [
         BlocListener<AuthCubit, AuthState>(
-          // listenWhen: (previousState, currentState) {
-          //   return (previousState is AuthenticatedUser && currentState is UnauthenticatedUser) ||
-          //       (currentState is AuthenticatedUser && previousState is! AuthenticatedUser);
-          // },
           listener: (context, state) {
             if (state is UnauthenticatedUser) {}
 
-            if (state is AuthenticatedUser) {
-              print('User is Authenticated');
-            }
+            if (state is AuthenticatedUser) {}
           },
         ),
       ],

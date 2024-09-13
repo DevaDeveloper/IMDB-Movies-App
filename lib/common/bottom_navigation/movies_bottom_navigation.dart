@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:imdb_movies_app/consts/assets/assets_path.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
@@ -10,8 +11,8 @@ class MoviesBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      color: Colors.black,
+      height: 80.h,
+      color: AppColorsLight.bottomNavigationBackgroundColor,
       child: Row(
         children: [
           Expanded(
@@ -20,16 +21,17 @@ class MoviesBottomNavigation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  AppAssets.starFilledIcon,
-                  width: AppDimens.smallIconSize,
-                  height: AppDimens.smallIconSize,
+                  AppAssets.moviesBottomSelected,
+                ),
+                const SizedBox(
+                  width: 10,
                 ),
                 Text(
                   'Movies',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: AppDimens.smallFontSize,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w600,
                     color: AppColorsLight.primaryTextColor,
                   ),
                 ),
@@ -42,9 +44,10 @@ class MoviesBottomNavigation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  AppAssets.starFilledIcon,
-                  width: AppDimens.smallIconSize,
-                  height: AppDimens.smallIconSize,
+                  AppAssets.favouritesBottomUnSelected,
+                ),
+                const SizedBox(
+                  width: 10,
                 ),
                 Text(
                   'Favourites',
