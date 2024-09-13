@@ -10,8 +10,14 @@ abstract class Themes {
   );
 
   static ThemeData lightTheme = ThemeData(
-    useMaterial3: true,
-    hintColor: AppColorsLight.hintColor,
-    scaffoldBackgroundColor: AppColorsLight.backgroundColor,
-  );
+      useMaterial3: true,
+      hintColor: AppColorsLight.hintColor,
+      scaffoldBackgroundColor: AppColorsLight.backgroundColor,
+      textTheme: const TextTheme(
+        titleMedium: TextStyle(
+          fontSize: 22.0,
+          fontWeight: FontWeight.w600,
+          color: AppColorsLight.primaryTextColor,
+        ),
+      ));
 }

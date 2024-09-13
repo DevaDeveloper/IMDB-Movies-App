@@ -9,14 +9,18 @@ class AppDimens {
   static const double extraMediumSpacing = 50.0;
 
   // Paddings
+
+  static const double extraSmallPadding = 4.0;
+  static const double smallPadding = 8.0;
   static const double mediumPadding = 30.0;
   static const double extraMediumPadding = 50.0;
   static const double extraLargePadding = 200.0;
 
   // Font sizes
-  static double smallFontSize = 12.0.sp;
-  static double mediumFontSize = 16.0.sp;
+  static double smallFontSize = 11.0.sp;
+  static double mediumFontSize = 15.0.sp;
   static double secondaryMediumFontSize = 20.0.sp;
+  static double largeFontSize = 22.0.sp;
 
   // Heights
   static double minHeight = 1.0.h;
@@ -30,10 +34,13 @@ class AppDimens {
   static double secondaryNormalWidth = 130.0.w;
 
   // Border radius
+  static double minBorderRadius = 2.0.r;
+  static double extraSmallBorderRadius = 4.0.r;
   static double smallBorderRadius = 10.0.r;
   static double normalBorderRadius = 20.0.r;
 
   // Icon sizes
   static double smallIconSize = 16.0.sp;
-  static double mediumIconSize = 25.0.sp;
+  static double mediumIconSize = 24.0.sp;
+  static double largeIconSize = 32.0.sp;
 }
