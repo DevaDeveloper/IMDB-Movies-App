@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:imdb_movies_app/features/movies/models/genre_response.dart';
+import 'package:imdb_movies_app/features/movies/models/movie_details.response.dart' as movieDetailsResponse;
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 
 class MoviesState extends Equatable {
@@ -8,6 +9,8 @@ class MoviesState extends Equatable {
   final List<Results>? moviesPopularResults;
   final int? moviesPopularTotalPages;
   final int? moviesPopularTotalResults;
+  final movieDetailsResponse.MovieDetailsResponse? movieDetails;
+  final List<Results>? favouriteMovies;
 
   const MoviesState({
     this.genres,
@@ -15,6 +18,8 @@ class MoviesState extends Equatable {
     this.moviesPopularResults,
     this.moviesPopularTotalPages,
     this.moviesPopularTotalResults,
+    this.movieDetails,
+    this.favouriteMovies,
   });
 
   factory MoviesState.initial() {
@@ -24,6 +29,8 @@ class MoviesState extends Equatable {
       moviesPopularResults: [],
       moviesPopularTotalPages: 1,
       moviesPopularTotalResults: 0,
+      movieDetails: null,
+      favouriteMovies: [],
     );
   }
 
@@ -33,6 +40,8 @@ class MoviesState extends Equatable {
     List<Results>? moviesPopularResults,
     int? moviesPopularTotalPages,
     int? moviesPopularTotalResults,
+    movieDetailsResponse.MovieDetailsResponse? movieDetails,
+    List<Results>? favouriteMovies,
   }) {
     return MoviesState(
       genres: genres ?? this.genres,
@@ -40,6 +49,8 @@ class MoviesState extends Equatable {
       moviesPopularResults: moviesPopularResults ?? this.moviesPopularResults,
       moviesPopularTotalPages: moviesPopularTotalPages ?? this.moviesPopularTotalPages,
       moviesPopularTotalResults: moviesPopularTotalResults ?? this.moviesPopularTotalResults,
+      movieDetails: movieDetails ?? this.movieDetails,
+      favouriteMovies: favouriteMovies ?? this.favouriteMovies,
     );
   }
 
@@ -50,5 +61,7 @@ class MoviesState extends Equatable {
         moviesPopularResults,
         moviesPopularTotalPages,
         moviesPopularTotalResults,
+        movieDetails,
+        favouriteMovies,
       ];
 }

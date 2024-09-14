@@ -45,22 +45,27 @@ final List<GoRoute> appRoutes = [
     ),
   ),
   GoRoute(
-    path: RouterPaths.movieDetails,
-    name: RouterPages.movieDetails,
-    pageBuilder: (context, state) => CustomTransitionPage<void>(
-      key: state.pageKey,
-      child: const MovieDetails(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return SlideTransition(
-          position: animation.drive(
-            Tween<Offset>(
-              begin: const Offset(1, 0),
-              end: Offset.zero,
-            ).chain(CurveTween(curve: Curves.easeIn)),
+      path: RouterPaths.movieDetails,
+      name: RouterPages.movieDetails,
+      pageBuilder: (context, state) {
+        String? movieId = state.extra as String?;
+
+        return CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: MovieDetails(
+            movieId: movieId,
           ),
-          child: child,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: animation.drive(
+                Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).chain(CurveTween(curve: Curves.easeIn)),
+              ),
+              child: child,
+            );
+          },
         );
-      },
-    ),
-  ),
+      }),
 ];

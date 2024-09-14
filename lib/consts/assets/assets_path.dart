@@ -4,4 +4,5 @@ class AppAssets {
   static const String starFilledIcon = 'assets/icons/star_icon_filled.svg';
   static const String moviesBottomSelected = 'assets/icons/movies_bottom_selected.svg';
   static const String favouritesBottomUnSelected = 'assets/icons/favourites_bottom_unselected.svg';
+  static const String movieDetailsBackArrow = 'assets/icons/movie_details_arrow_icon.svg';
 }

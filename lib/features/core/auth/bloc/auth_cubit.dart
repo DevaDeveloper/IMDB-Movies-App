@@ -13,7 +13,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String? token,
     required String? userId,
   }) : super(AuthInitial()) {
-    emit(const AuthenticatedUser(userId: 'uuid'));
+    emit(AuthenticatedUser(userId: 'uuid'));
   }
 
   Future<bool> login(String email, String password) async {

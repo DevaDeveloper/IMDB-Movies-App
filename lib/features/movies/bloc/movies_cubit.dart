@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
 import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
 import 'package:imdb_movies_app/features/movies/models/genre_response.dart';
+import 'package:imdb_movies_app/features/movies/models/movie_details.response.dart' as movieDetailsResponse;
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/features/movies/repo/movies_repo.dart';
 import 'package:imdb_movies_app/features/movies/utils/movies_util.dart';
@@ -19,6 +20,22 @@ class MoviesCubit extends Cubit<MoviesState> {
       moviesPopularTotalPages: 1,
       moviesPopularTotalResults: 0,
     ));
+  }
+
+  void handleSetSingleFavouriteMovie(Results movie) {
+    List<Results>? favouriteMovies = [...state.favouriteMovies ?? []];
+
+    favouriteMovies.add(movie);
+
+    emit(state.copyWith(favouriteMovies: favouriteMovies));
+  }
+
+  void handleSetMultipleFavouriteMovies(List<Results> movies) {
+    List<Results>? favouriteMovies = [...state.favouriteMovies ?? []];
+
+    favouriteMovies.addAll(movies);
+
+    emit(state.copyWith(favouriteMovies: favouriteMovies));
   }
 
   Future<bool> handleGetGenres() async {
@@ -75,6 +92,20 @@ class MoviesCubit extends Cubit<MoviesState> {
       moviesPopularTotalPages: totalPages,
       moviesPopularTotalResults: totalResults,
     ));
+
+    return true;
+  }
+
+  Future<bool> handleGetMovieDetails(String movieId) async {
+    ResponseApp<movieDetailsResponse.MovieDetailsResponse> result = await moviesRepository.getMovieDetails(movieId);
+
+    if (MoviesHelper.isErrorResponse(result)) {
+      return false;
+    }
+
+    movieDetailsResponse.MovieDetailsResponse movieDetails = result.data!;
+
+    emit(state.copyWith(movieDetails: movieDetails));
 
     return true;
   }
