@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:imdb_movies_app/models/failure_model.dart';
 
-import '../../../consts/api/api_path.dart';
+import '../../../consts/api/api_consts.dart';
 import '../../exceptions/repo_exception.dart';
 
 class ApiService {
-  static String url = dotenv.env[ApiPaths.BASE_URL] ?? 'BASE_URL';
+  static String url = dotenv.env[ApiConsts.BASE_API_PATH] ?? 'API_URL';
   static final ApiService _instance = ApiService._internal();
 
   ApiService._internal();
@@ -137,9 +137,9 @@ class ImdbInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     debugPrint('REQUEST[${options.method}] => PATH: ${options.path}');
 
-    final String imdbAccessToken = dotenv.env['ACCESS_TOKEN_MOVIES'] ?? 'ACCESS_TOKEN_MOVIES';
+    final String accessToken = dotenv.env[ApiConsts.ACCESS_TOKEN] ?? 'access_token';
     options.headers['content-Type'] = 'application/json';
-    options.headers["Authorization"] = "Bearer $imdbAccessToken";
+    options.headers["Authorization"] = "Bearer $accessToken";
     return handler.next(options);
   }
 

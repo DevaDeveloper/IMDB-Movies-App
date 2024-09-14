@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
       userId: 'uuid',
     ));
 
-    return false;
+    return true;
   }
 
   Future<bool> logOut() async {
