@@ -6,6 +6,7 @@ import 'package:imdb_movies_app/common/bottom_navigation/movies_bottom_navigatio
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
 import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
+import 'package:imdb_movies_app/features/movies/models/screen_enum.dart';
 import 'package:imdb_movies_app/features/movies/widgets/movie_card.dart';
 import 'package:imdb_movies_app/features/movies/widgets/movies_app_bar.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
@@ -26,8 +27,6 @@ class _MoviesScreenState extends State<MoviesScreen> {
   void initState() {
     super.initState();
 
-    context.read<MoviesCubit>().handleClearPopularMoviesState();
-
     handleFetchGenresAndPopularMovies();
   }
 
@@ -35,6 +34,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
     final cancel = BotToast.showLoading();
     await context.read<MoviesCubit>().handleGetGenres();
     cancel();
+
+    int? moviesPopularLength = MoviesHelper.handleGetPopularMoviesLength(context.read<MoviesCubit>().state.moviesPopularResults);
+
+    if (MoviesHelper.isPopularMoviesInState(moviesPopularLength)) {
+      return;
+    }
 
     handleFetchPopularMovies();
   }
@@ -58,7 +63,9 @@ class _MoviesScreenState extends State<MoviesScreen> {
     return Scaffold(
       backgroundColor: AppColorsLight.backgroundColor,
       appBar: const MoviesAppBar(),
-      bottomNavigationBar: const MoviesBottomNavigation(),
+      bottomNavigationBar: const MoviesBottomNavigation(
+        movieScreenEnum: MovieScreenEnum.popular,
+      ),
       body: BlocBuilder<MoviesCubit, MoviesState>(builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(AppDimens.smallSpacing),

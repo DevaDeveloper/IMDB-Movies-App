@@ -23,7 +23,20 @@ class MoviesHelper {
   }
 
   static List<Results> getPopularMoviesState(MoviesState state) {
-    List<Results> popularMoviesResults = state.moviesPopularResults ?? [];
+    List<Results> popularMoviesResults = [...state.moviesPopularResults ?? []];
+
     return popularMoviesResults;
   }
+
+  static bool isGenresInState(List<Genres>? genreListState) => genreListState != null && genreListState.isNotEmpty;
+
+  static int? handleGetPopularMoviesLength(List<Results>? moviesPopularResults) {
+    int? moviesPopularLength = moviesPopularResults?.length ?? 0;
+
+    return moviesPopularLength;
+  }
+
+  static bool isPopularMoviesInState(int? moviesPopularLength) => moviesPopularLength != null && moviesPopularLength > 0;
+
+  static bool isPopularMoviesEmpty(List<Results>? popularMovies) => popularMovies == null || popularMovies.isEmpty;
 }

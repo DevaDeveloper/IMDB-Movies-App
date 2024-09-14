@@ -4,19 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:imdb_movies_app/common/bottom_navigation/movies_bottom_navigation.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
+import 'package:imdb_movies_app/features/movies/models/screen_enum.dart';
 import 'package:imdb_movies_app/features/movies/widgets/movie_card.dart';
 import 'package:imdb_movies_app/features/movies/widgets/movies_app_bar.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
 import 'package:imdb_movies_app/styles/colors.dart';
 
-class FavouritesScreem extends StatefulWidget {
-  const FavouritesScreem({super.key});
+class FavouritesScreen extends StatefulWidget {
+  const FavouritesScreen({super.key});
 
   @override
-  State<FavouritesScreem> createState() => _FavouritesScreemState();
+  State<FavouritesScreen> createState() => _FavouritesScreenState();
 }
 
-class _FavouritesScreemState extends State<FavouritesScreem> {
+class _FavouritesScreenState extends State<FavouritesScreen> {
   bool isLoadingMore = false;
 
   @override
@@ -29,7 +30,9 @@ class _FavouritesScreemState extends State<FavouritesScreem> {
     return Scaffold(
       backgroundColor: AppColorsLight.backgroundColor,
       appBar: const MoviesAppBar(),
-      bottomNavigationBar: const MoviesBottomNavigation(),
+      bottomNavigationBar: const MoviesBottomNavigation(
+        movieScreenEnum: MovieScreenEnum.favourites,
+      ),
       body: BlocBuilder<MoviesCubit, MoviesState>(builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(AppDimens.smallSpacing),
@@ -38,7 +41,7 @@ class _FavouritesScreemState extends State<FavouritesScreem> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Popular',
+                  'Favourites',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: AppDimens.largeFontSize,
@@ -52,7 +55,7 @@ class _FavouritesScreemState extends State<FavouritesScreem> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: state.moviesPopularResults?.length,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return MovieCard(
                       movieData: state.moviesPopularResults![index],

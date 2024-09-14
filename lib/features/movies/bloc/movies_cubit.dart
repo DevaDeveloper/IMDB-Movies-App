@@ -4,6 +4,7 @@ import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
 import 'package:imdb_movies_app/features/movies/models/genre_response.dart';
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/features/movies/repo/movies_repo.dart';
+import 'package:imdb_movies_app/features/movies/utils/movies_util.dart';
 import 'package:imdb_movies_app/models/response.dart';
 
 class MoviesCubit extends Cubit<MoviesState> {
@@ -21,6 +22,12 @@ class MoviesCubit extends Cubit<MoviesState> {
   }
 
   Future<bool> handleGetGenres() async {
+    List<Genres>? genreListState = state.genres;
+
+    if (MoviesHelper.isGenresInState(genreListState)) {
+      return true;
+    }
+
     ResponseApp<GetGenreResponse>? result = await moviesRepository.getMovieGenres();
 
     if (result.isError) {
@@ -44,15 +51,19 @@ class MoviesCubit extends Cubit<MoviesState> {
     }
 
     GetMoviesPopularResponse? popularMovies = result.data;
+    List<Results>? results = popularMovies?.results ?? [];
+
+    List<Genres>? genres = [...state.genres ?? []];
+
+    List<Results> popularMoviesWithGenreNames = MoviesUtil.handleSetGenreNamesToMovies(results, genres);
 
     List<Results> popularMoviesResults = MoviesHelper.getPopularMoviesState(state);
 
     int page = popularMovies?.page ?? 1;
-    List<Results>? results = popularMovies?.results ?? [];
     int? totalPages = popularMovies?.totalPages;
     int? totalResults = popularMovies?.totalResults;
 
-    popularMoviesResults.addAll(results);
+    popularMoviesResults.addAll(popularMoviesWithGenreNames);
 
     int nextPage = page + 1;
 

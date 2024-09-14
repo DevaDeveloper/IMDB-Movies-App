@@ -80,6 +80,7 @@ class Results {
     video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
+    genreNames = [];
   }
 
   Map<String, dynamic> toJson() {
