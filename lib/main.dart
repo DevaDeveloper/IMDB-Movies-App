@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:imdb_movies_app/config/router/router_paths.dart';
+import 'package:imdb_movies_app/consts/hive/hive_consts.dart';
 import 'package:imdb_movies_app/features/core/auth/bloc/auth_cubit.dart';
 import 'package:imdb_movies_app/helpers/global_helpers.dart';
 import 'package:imdb_movies_app/main/app_widget.dart';
@@ -19,6 +21,10 @@ void main() async {
   ]);
 
   GlobalHelpers().loadEnvVariables();
+
+  await Hive.initFlutter();
+
+  final box = await Hive.openBox(HiveConsts.moviesBox);
 
   String languageCode = await SharedPreferencesHelper.getLanguageCode();
   String theme = await SharedPreferencesHelper.getTheme();

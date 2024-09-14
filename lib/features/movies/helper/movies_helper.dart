@@ -1,17 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:imdb_movies_app/consts/api/api_path.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
 import 'package:imdb_movies_app/features/movies/models/genre_response.dart';
+import 'package:imdb_movies_app/features/movies/models/movie_details.response.dart' as movieDetailsResponse;
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
+import 'package:imdb_movies_app/models/response.dart';
 
 class MoviesHelper {
   static GetGenreResponse parseJsonDataGenres(Response<dynamic>? response) {
     GetGenreResponse genres = GetGenreResponse.fromJson(response?.data);
+
     return genres;
   }
 
   static GetMoviesPopularResponse parseJsonDataPopularMovies(Response<dynamic>? response) {
     GetMoviesPopularResponse popularMovies = GetMoviesPopularResponse.fromJson(response?.data);
+
     return popularMovies;
   }
 
@@ -39,4 +44,19 @@ class MoviesHelper {
   static bool isPopularMoviesInState(int? moviesPopularLength) => moviesPopularLength != null && moviesPopularLength > 0;
 
   static bool isPopularMoviesEmpty(List<Results>? popularMovies) => popularMovies == null || popularMovies.isEmpty;
+
+  static String handleCreateMovieDetailsApiPath(String movieId) {
+    String apiPath = '${ApiPath.MOVIE_DETAILS}/$movieId';
+
+    return apiPath;
+  }
+
+  static movieDetailsResponse.MovieDetailsResponse parseJsonDataMovieDetails(Response<dynamic>? response) {
+    movieDetailsResponse.MovieDetailsResponse movieDetails = movieDetailsResponse.MovieDetailsResponse.fromJson(response?.data);
+
+    return movieDetails;
+  }
+
+  static bool isErrorResponse(ResponseApp<movieDetailsResponse.MovieDetailsResponse> result) =>
+      result.isError || result.data == null;
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:imdb_movies_app/consts/api/api_path.dart';
 import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
 import 'package:imdb_movies_app/features/movies/models/genre_response.dart';
+import 'package:imdb_movies_app/features/movies/models/movie_details.response.dart';
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/models/failure_model.dart';
 import 'package:imdb_movies_app/models/response.dart';
@@ -46,10 +47,34 @@ class MoviesRepository {
 
       return ResponseApp(data: genres);
     } on RepoException catch (e) {
-      debugPrint('e getMovieGenres: $e');
+      debugPrint('e getMoviesPopular: $e');
       return ResponseApp(failure: e.failure);
     } catch (ex) {
-      debugPrint('ex getMovieGenres: $ex');
+      debugPrint('ex getMoviesPopular: $ex');
+      return ResponseApp(failure: parsingError);
+    }
+  }
+
+  Future<ResponseApp<MovieDetailsResponse>> getMovieDetails(String movieId) async {
+    try {
+      String apiPath = MoviesHelper.handleCreateMovieDetailsApiPath(movieId);
+
+      Map<String, dynamic>? queryParams = {'language': 'en_US'};
+
+      Response? response = await apiService.getHTTP(apiPath, queryParams);
+
+      if (response?.statusCode == 204) {
+        return ResponseApp(failure: noContentError);
+      }
+
+      MovieDetailsResponse movieDetails = MoviesHelper.parseJsonDataMovieDetails(response);
+
+      return ResponseApp(data: movieDetails);
+    } on RepoException catch (e) {
+      debugPrint('e getMovieDetails: $e');
+      return ResponseApp(failure: e.failure);
+    } catch (ex) {
+      debugPrint('ex getMovieDetails: $ex');
       return ResponseApp(failure: parsingError);
     }
   }

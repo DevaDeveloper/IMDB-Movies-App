@@ -23,7 +23,7 @@ class _MovieCardState extends State<MovieCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push(RouterPaths.movieDetails);
+        context.push(RouterPaths.movieDetails, extra: widget.movieData.id.toString());
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppDimens.smallSpacing),
@@ -83,7 +83,7 @@ class _MovieCardState extends State<MovieCard> {
                                   width: 5,
                                 ),
                                 Text(
-                                  '${widget.movieData.voteAverage} / 10 IMDb',
+                                  '${widget.movieData.voteAverage?.toStringAsFixed(1)} / 10 IMDb',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: AppDimens.smallFontSize,

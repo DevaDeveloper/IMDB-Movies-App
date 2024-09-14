@@ -2,6 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:imdb_movies_app/consts/hive/hive_consts.dart';
 import 'package:imdb_movies_app/features/core/auth/bloc/auth_cubit.dart';
 import 'package:imdb_movies_app/styles/themes.dart';
 
@@ -22,6 +24,12 @@ class _MainWidgetState extends State<MainWidget> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
+
+    final _moviesBox = Hive.box(HiveConsts.moviesBox);
+
+    final favouriteMoves = _moviesBox.get(HiveConsts.favouriteMoviesKey);
+
+    print('hive favourite movies: $favouriteMoves');
   }
 
   @override
@@ -49,6 +57,7 @@ class _MainWidgetState extends State<MainWidget> with WidgetsBindingObserver {
       listeners: [
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
+            print('IMA LI OVOG LISTENERA');
             if (state is UnauthenticatedUser) {}
 
             if (state is AuthenticatedUser) {}
