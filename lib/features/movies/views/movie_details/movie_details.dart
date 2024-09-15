@@ -86,7 +86,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                       ),
                     ),
                     Positioned(
-                        left: 30,
+                        left: AppDimens.extraMediumSpacing,
                         top: 70,
                         child: InkWell(
                           onTap: () {
@@ -95,11 +95,22 @@ class _MovieDetailsState extends State<MovieDetails> {
                             }
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(AppDimens.smallSpacing),
                             child: SvgPicture.asset(
                               AppAssets.movieDetailsBackArrow,
                             ),
                           ),
+                        )),
+                    Positioned(
+                        bottom: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: AppColorsLight.backgroundColor,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(AppDimens.maxBorderRadius),
+                                  topRight: Radius.circular(AppDimens.maxBorderRadius))),
+                          width: MediaQuery.sizeOf(context).width,
+                          height: AppDimens.secondarySmallSpacing.h,
                         ))
                   ],
                 ),
@@ -107,7 +118,8 @@ class _MovieDetailsState extends State<MovieDetails> {
               Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppDimens.extraMediumSpacing, vertical: AppDimens.smallSpacing),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -131,7 +143,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.extraMediumSpacing),
                     child: Row(
                       children: [
                         SvgPicture.asset(
@@ -143,7 +155,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                           width: 5,
                         ),
                         Text(
-                          '${state.movieDetails?.voteAverage?.toStringAsFixed(1) ?? ''} / 10 IMDb',
+                          '${state.movieDetails?.voteAverage?.toStringAsFixed(1) ?? '_'} / 10 IMDb',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontSize: AppDimens.smallFontSize,
@@ -159,7 +171,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppDimens.extraMediumSpacing, vertical: AppDimens.smallSpacing),
                             child: Wrap(
                               children: [
                                 ...state.movieDetails!.genres!.map(
@@ -174,7 +187,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                                             vertical: AppDimens.extraSmallPadding, horizontal: AppDimens.smallPadding.sp),
                                         decoration: BoxDecoration(
                                           color: AppColorsLight.genreBackgroundColor,
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius: BorderRadius.circular(AppDimens.extraSmallBorderRadius),
                                         ),
                                         child: Text(
                                           genre.name ?? '',
@@ -197,7 +210,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                     ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppDimens.extraMediumSpacing, vertical: AppDimens.smallSpacing),
                     child: Text(
                       'Description',
                       textAlign: TextAlign.left,
@@ -210,7 +224,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppDimens.extraMediumSpacing, vertical: AppDimens.smallSpacing),
                     child: Text(
                       state.movieDetails?.overview ?? '',
                       textAlign: TextAlign.left,

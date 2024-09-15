@@ -2,14 +2,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppDimens {
   // Spacings
+  static const double minSpacing = 2.0;
   static const double extraSmallSpacing = 5.0;
   static const double smallSpacing = 10.0;
   static const double secondarySmallSpacing = 15.0;
   static const double mediumSpacing = 20.0;
-  static const double extraMediumSpacing = 50.0;
+  static const double extraMediumSpacing = 30.0;
 
   // Paddings
-
   static const double extraSmallPadding = 4.0;
   static const double smallPadding = 8.0;
   static const double mediumPadding = 30.0;
@@ -38,6 +38,7 @@ class AppDimens {
   static double extraSmallBorderRadius = 4.0.r;
   static double smallBorderRadius = 10.0.r;
   static double normalBorderRadius = 20.0.r;
+  static double maxBorderRadius = 99.0.r;
 
   // Icon sizes
   static double smallIconSize = 16.0.sp;

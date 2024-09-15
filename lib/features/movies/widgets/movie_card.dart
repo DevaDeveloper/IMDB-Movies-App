@@ -119,7 +119,7 @@ class MovieCard extends StatelessWidget {
                                         ),
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: AppDimens.extraSmallPadding, horizontal: AppDimens.smallPadding.sp),
+                                              vertical: AppDimens.extraSmallPadding.h, horizontal: AppDimens.smallPadding.w),
                                           decoration: BoxDecoration(
                                             color: AppColorsLight.genreBackgroundColor,
                                             borderRadius: BorderRadius.circular(4),
