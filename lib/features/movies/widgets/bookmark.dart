@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:imdb_movies_app/consts/assets/assets_path.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:imdb_movies_app/features/movies/models/movie_details.response.da
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/features/movies/models/screen_enum.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
+import 'package:imdb_movies_app/styles/colors.dart';
 
 class Bookmark extends StatefulWidget {
   const Bookmark({this.movieData, this.movieId, this.screenEnum, super.key});
@@ -55,6 +57,8 @@ class _BookmarkState extends State<Bookmark> {
       handleCheckIsMovieInFavourites();
     }, builder: (context, state) {
       return InkWell(
+        customBorder: const CircleBorder(),
+        splashColor: AppColorsLight.primaryCheckedColor,
         onTap: () {
           if (widget.screenEnum == MovieScreenEnum.details) {
             MovieDetailsResponse? movieDetails = state.movieDetails;
@@ -73,15 +77,21 @@ class _BookmarkState extends State<Bookmark> {
           context.read<MoviesCubit>().handleSetSingleFavouriteMovie(widget.movieData!);
         },
         child: isInFavourites
-            ? SvgPicture.asset(
-                AppAssets.bookmarkFilledIcon,
-                width: AppDimens.mediumIconSize,
-                height: AppDimens.mediumIconSize,
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppDimens.extraSmallSpacing.w, vertical: AppDimens.minSpacing.h),
+                child: SvgPicture.asset(
+                  AppAssets.bookmarkFilledIcon,
+                  width: AppDimens.mediumIconSize,
+                  height: AppDimens.mediumIconSize,
+                ),
               )
-            : SvgPicture.asset(
-                AppAssets.bookmarkEmptyIcon,
-                width: AppDimens.mediumIconSize,
-                height: AppDimens.mediumIconSize,
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppDimens.extraSmallSpacing.h, vertical: AppDimens.minSpacing.h),
+                child: SvgPicture.asset(
+                  AppAssets.bookmarkEmptyIcon,
+                  width: AppDimens.mediumIconSize,
+                  height: AppDimens.mediumIconSize,
+                ),
               ),
       );
     });
