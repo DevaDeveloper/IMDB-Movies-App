@@ -6,4 +6,5 @@ class AppAssets {
   static const String favouritesBottomUnSelected = 'assets/icons/favourites_bottom_unselected.svg';
   static const String movieDetailsBackArrow = 'assets/icons/movie_details_arrow_icon.svg';
   static const String bookmarkFilledIcon = 'assets/icons/bookmark_filled.svg';
+  static const String defaultMovieImage = 'assets/images/default_movie_image.png';
 }

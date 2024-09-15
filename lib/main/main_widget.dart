@@ -137,9 +137,7 @@ class _MainWidgetState extends State<MainWidget> with WidgetsBindingObserver {
             if (state is LostInternetConnectionState) {
               BotToastNotifications.showErrorNotification(context, 'Please check your internet connection');
             }
-            if (state is HasInternetConnectionState) {
-              print('DOSLA KONEKCIJA');
-            }
+            if (state is HasInternetConnectionState) {}
           },
         ),
       ],

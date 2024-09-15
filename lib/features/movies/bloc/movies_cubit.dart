@@ -28,6 +28,10 @@ class MoviesCubit extends Cubit<MoviesState> {
     ));
   }
 
+  void handleSetMovieDetails(movieDetailsResponse.MovieDetailsResponse movieDetails) {
+    emit(state.copyWith(movieDetails: movieDetails));
+  }
+
   void handleSetSingleFavouriteMovie(Results movie) {
     List<Results>? favouriteMoviesState = [...state.favouriteMovies ?? []];
 
@@ -43,7 +47,9 @@ class MoviesCubit extends Cubit<MoviesState> {
     }
 
     if (isInFavourites) {
-      favouriteMoviesState.remove(movie);
+      int movieIndex = MoviesHelper.findMovieIndex(favouriteMoviesState, movie.id);
+
+      favouriteMoviesState.removeAt(movieIndex);
     }
 
     if (!isInCacheFavourites) {
@@ -56,7 +62,9 @@ class MoviesCubit extends Cubit<MoviesState> {
       hiveResults.Results? cachedMovie = MoviesHelper.findMovieInCachedMovies(cachedFavouriteMovies, movie.id);
 
       if (cachedMovie != null) {
-        cachedFavouriteMovies.remove(cachedMovie);
+        int movieIndex = MoviesHelper.findCachedMovieIndex(cachedFavouriteMovies, cachedMovie);
+
+        cachedFavouriteMovies.removeAt(movieIndex);
       }
     }
 
@@ -127,8 +135,6 @@ class MoviesCubit extends Cubit<MoviesState> {
 
     int nextPage = page + 1;
 
-    print('page: $page, results: ${results.length}, totalPages: $totalPages, totalResults: $totalResults');
-
     HiveService.handleCachePopularMovies(popularMoviesWithGenreNames, page, results);
 
     emit(state.copyWith(
@@ -142,6 +148,8 @@ class MoviesCubit extends Cubit<MoviesState> {
   }
 
   Future<bool> handleGetMovieDetails(String movieId) async {
+    emit(state.copyWith(movieDetails: movieDetailsResponse.MovieDetailsResponse()));
+
     ResponseApp<movieDetailsResponse.MovieDetailsResponse> result = await moviesRepository.getMovieDetails(movieId);
 
     if (MoviesHelper.isErrorResponse(result)) {

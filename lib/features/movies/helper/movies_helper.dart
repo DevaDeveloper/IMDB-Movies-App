@@ -87,4 +87,55 @@ class MoviesHelper {
 
     return favouriteMovie;
   }
+
+  static Results handleCreateMovieObject(movieDetailsResponse.MovieDetailsResponse movie) {
+    Results movieData = Results(
+      id: movie.id,
+      genreIds: [],
+      genreNames: movie.genresList,
+      overview: movie.overview,
+      originalTitle: movie.originalTitle,
+      title: movie.title,
+      posterPath: movie.posterPath,
+      voteAverage: movie.voteAverage,
+      popularity: movie.popularity,
+      voteCount: movie.voteCount,
+    );
+
+    return movieData;
+  }
+
+  static int findMovieIndex(List<Results>? favouriteMoviesState, int? movieId) {
+    Results? favouriteMovie = favouriteMoviesState?.firstWhereOrNull((movie) => movie.id == movieId);
+
+    if (favouriteMovie == null) {
+      return -1;
+    }
+
+    int movieIndex = favouriteMoviesState!.indexOf(favouriteMovie);
+
+    return movieIndex;
+  }
+
+  static int findCachedMovieIndex(List<hiveResults.Results> cachedFavouriteMovies, hiveResults.Results cachedMovie) {
+    int movieIndex = cachedFavouriteMovies.indexOf(cachedMovie);
+
+    return movieIndex;
+  }
+
+  static movieDetailsResponse.MovieDetailsResponse handleCreateMovieDetailsObject(Results movie) {
+    movieDetailsResponse.MovieDetailsResponse movieData = movieDetailsResponse.MovieDetailsResponse(
+      id: movie.id,
+      genresList: movie.genreNames,
+      overview: movie.overview,
+      originalTitle: movie.originalTitle,
+      title: movie.title,
+      posterPath: movie.posterPath,
+      voteAverage: movie.voteAverage,
+      popularity: movie.popularity,
+      voteCount: movie.voteCount,
+    );
+
+    return movieData;
+  }
 }

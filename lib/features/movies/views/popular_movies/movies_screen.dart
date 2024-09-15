@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:imdb_movies_app/common/bottom_navigation/movies_bottom_navigation.dart';
+import 'package:imdb_movies_app/features/internet_connection/bloc/internet_collection_state.dart';
+import 'package:imdb_movies_app/features/internet_connection/bloc/internet_connection_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
 import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
@@ -89,22 +91,34 @@ class _MoviesScreenState extends State<MoviesScreen> {
               Expanded(
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollNotification) {
+                    InternetConnectionState internetConnectionState = context.read<InternetConnectionCubit>().state;
+
                     Future.delayed(const Duration(milliseconds: 500), () {
-                      if (MoviesHelper.isFetchMorePopularMoviesValid(
-                          scrollNotification, isLoadingMore, state.moviesPopularTotalPages ?? 1, state.moviesPopularPage ?? 1)) {
+                      if (MoviesHelper.isFetchMorePopularMoviesValid(scrollNotification, isLoadingMore,
+                              state.moviesPopularTotalPages ?? 1, state.moviesPopularPage ?? 1) &&
+                          internetConnectionState is HasInternetConnectionState) {
                         handleFetchPopularMovies();
                       }
                     });
                     return true;
                   },
-                  child: ListView.builder(
-                    itemCount: state.moviesPopularResults?.length,
-                    itemBuilder: (context, index) {
-                      return MovieCard(
-                        movieData: state.moviesPopularResults![index],
-                      );
-                    },
-                  ),
+                  child: state.moviesPopularResults!.isEmpty
+                      ? ListView.builder(
+                          itemCount: state.cachedPopularMovies?.length,
+                          itemBuilder: (context, index) {
+                            return MovieCard(
+                              movieData: state.cachedPopularMovies![index],
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          itemCount: state.moviesPopularResults?.length,
+                          itemBuilder: (context, index) {
+                            return MovieCard(
+                              movieData: state.moviesPopularResults![index],
+                            );
+                          },
+                        ),
                 ),
               )
             ],

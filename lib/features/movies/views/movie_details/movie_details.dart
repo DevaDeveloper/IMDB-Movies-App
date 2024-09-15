@@ -8,9 +8,14 @@ import 'package:imdb_movies_app/consts/api/api_path.dart';
 import 'package:imdb_movies_app/consts/assets/assets_path.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
+import 'package:imdb_movies_app/features/movies/models/screen_enum.dart';
+import 'package:imdb_movies_app/features/movies/widgets/bookmark.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
 import 'package:imdb_movies_app/styles/colors.dart';
 import 'package:imdb_movies_app/utils/bot_toast_notifications/bot_toast_notifications.dart';
+
+import '../../../internet_connection/bloc/internet_collection_state.dart';
+import '../../../internet_connection/bloc/internet_connection_cubit.dart';
 
 class MovieDetails extends StatefulWidget {
   const MovieDetails({this.movieId, super.key});
@@ -31,6 +36,12 @@ class _MovieDetailsState extends State<MovieDetails> {
 
   Future<void> handleFetchMovieDetails() async {
     if (widget.movieId == null) {
+      return;
+    }
+
+    InternetConnectionState internetConnectionState = context.read<InternetConnectionCubit>().state;
+
+    if (internetConnectionState is LostInternetConnectionState) {
       return;
     }
 
@@ -67,8 +78,9 @@ class _MovieDetailsState extends State<MovieDetails> {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiDutvktAoaPzmjTPvbCxlRVOYCSytoUUU1Q&s',
-                            fit: BoxFit.fill,
+                            width: double.infinity,
+                            AppAssets.defaultMovieImage,
+                            fit: BoxFit.cover,
                           );
                         },
                       ),
@@ -111,11 +123,10 @@ class _MovieDetailsState extends State<MovieDetails> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SvgPicture.asset(
-                          AppAssets.bookmarkEmptyIcon,
-                          width: AppDimens.mediumIconSize,
-                          height: AppDimens.mediumIconSize,
-                        ),
+                        Bookmark(
+                          movieId: int.tryParse(widget.movieId!),
+                          screenEnum: MovieScreenEnum.details,
+                        )
                       ],
                     ),
                   ),
@@ -132,7 +143,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                           width: 5,
                         ),
                         Text(
-                          '${state.movieDetails?.voteAverage?.toStringAsFixed(1)} / 10 IMDb',
+                          '${state.movieDetails?.voteAverage?.toStringAsFixed(1) ?? ''} / 10 IMDb',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontSize: AppDimens.smallFontSize,

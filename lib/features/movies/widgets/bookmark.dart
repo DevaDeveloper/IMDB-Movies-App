@@ -5,13 +5,17 @@ import 'package:imdb_movies_app/consts/assets/assets_path.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
 import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
+import 'package:imdb_movies_app/features/movies/models/movie_details.response.dart';
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
+import 'package:imdb_movies_app/features/movies/models/screen_enum.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
 
 class Bookmark extends StatefulWidget {
-  const Bookmark({required this.movieData, super.key});
+  const Bookmark({this.movieData, this.movieId, this.screenEnum, super.key});
 
-  final Results movieData;
+  final Results? movieData;
+  final int? movieId;
+  final MovieScreenEnum? screenEnum;
 
   @override
   State<Bookmark> createState() => _BookmarkState();
@@ -30,7 +34,15 @@ class _BookmarkState extends State<Bookmark> {
   void handleCheckIsMovieInFavourites() {
     List<Results> favouriteMoviesState = context.read<MoviesCubit>().state.favouriteMovies ?? [];
 
-    bool isInFavouriteMovies = MoviesHelper.checkIfMovieIsInFavourites(favouriteMoviesState, widget.movieData.id);
+    bool isInFavouriteMovies = false;
+
+    if (widget.screenEnum == MovieScreenEnum.details) {
+      isInFavouriteMovies = MoviesHelper.checkIfMovieIsInFavourites(favouriteMoviesState, widget.movieId);
+    }
+
+    if (widget.screenEnum != MovieScreenEnum.details) {
+      isInFavouriteMovies = MoviesHelper.checkIfMovieIsInFavourites(favouriteMoviesState, widget.movieData?.id);
+    }
 
     setState(() {
       isInFavourites = isInFavouriteMovies;
@@ -44,7 +56,21 @@ class _BookmarkState extends State<Bookmark> {
     }, builder: (context, state) {
       return InkWell(
         onTap: () {
-          context.read<MoviesCubit>().handleSetSingleFavouriteMovie(widget.movieData);
+          if (widget.screenEnum == MovieScreenEnum.details) {
+            MovieDetailsResponse? movieDetails = state.movieDetails;
+
+            if (movieDetails == null) {
+              return;
+            }
+
+            Results movieData = MoviesHelper.handleCreateMovieObject(movieDetails);
+
+            context.read<MoviesCubit>().handleSetSingleFavouriteMovie(movieData);
+
+            return;
+          }
+
+          context.read<MoviesCubit>().handleSetSingleFavouriteMovie(widget.movieData!);
         },
         child: isInFavourites
             ? SvgPicture.asset(
