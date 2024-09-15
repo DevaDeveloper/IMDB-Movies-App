@@ -11,6 +11,7 @@ class MoviesState extends Equatable {
   final int? moviesPopularTotalResults;
   final movieDetailsResponse.MovieDetailsResponse? movieDetails;
   final List<Results>? favouriteMovies;
+  final List<Results>? cachedPopularMovies;
 
   const MoviesState({
     this.genres,
@@ -20,6 +21,7 @@ class MoviesState extends Equatable {
     this.moviesPopularTotalResults,
     this.movieDetails,
     this.favouriteMovies,
+    this.cachedPopularMovies,
   });
 
   factory MoviesState.initial() {
@@ -31,6 +33,7 @@ class MoviesState extends Equatable {
       moviesPopularTotalResults: 0,
       movieDetails: null,
       favouriteMovies: [],
+      cachedPopularMovies: [],
     );
   }
 
@@ -42,6 +45,7 @@ class MoviesState extends Equatable {
     int? moviesPopularTotalResults,
     movieDetailsResponse.MovieDetailsResponse? movieDetails,
     List<Results>? favouriteMovies,
+    List<Results>? cachedPopularMovies,
   }) {
     return MoviesState(
       genres: genres ?? this.genres,
@@ -51,6 +55,7 @@ class MoviesState extends Equatable {
       moviesPopularTotalResults: moviesPopularTotalResults ?? this.moviesPopularTotalResults,
       movieDetails: movieDetails ?? this.movieDetails,
       favouriteMovies: favouriteMovies ?? this.favouriteMovies,
+      cachedPopularMovies: cachedPopularMovies ?? this.cachedPopularMovies,
     );
   }
 
@@ -63,5 +68,6 @@ class MoviesState extends Equatable {
         moviesPopularTotalResults,
         movieDetails,
         favouriteMovies,
+        cachedPopularMovies,
       ];
 }
