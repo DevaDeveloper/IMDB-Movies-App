@@ -6,7 +6,7 @@ class AppDimens {
   static const double smallSpacing = 10.0;
   static const double secondarySmallSpacing = 15.0;
   static const double mediumSpacing = 20.0;
-  static const double extraMediumSpacing = 50.0;
+  static const double extraMediumSpacing = 30.0;
 
   // Paddings
 
@@ -38,6 +38,7 @@ class AppDimens {
   static double extraSmallBorderRadius = 4.0.r;
   static double smallBorderRadius = 10.0.r;
   static double normalBorderRadius = 20.0.r;
+  static double maxBorderRadius = 99.0.r;
 
   // Icon sizes
   static double smallIconSize = 16.0.sp;
