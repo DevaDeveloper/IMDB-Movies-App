@@ -2,12 +2,15 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:imdb_movies_app/consts/hive/hive_consts.dart';
+import 'package:hive/hive.dart';
 import 'package:imdb_movies_app/features/core/auth/bloc/auth_cubit.dart';
+import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
+import 'package:imdb_movies_app/features/movies/helper/hive/hive_helper.dart';
+import 'package:imdb_movies_app/features/movies/models/hive/movies.dart';
+import 'package:imdb_movies_app/features/movies/models/hive/results.dart' as hiveResults;
+import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/styles/themes.dart';
-
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:imdb_movies_app/utils/services/hive/hive_service.dart';
 
 import '../main.dart';
 
@@ -25,11 +28,19 @@ class _MainWidgetState extends State<MainWidget> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
-    final _moviesBox = Hive.box(HiveConsts.moviesBox);
+    handleSetCachedFavouriteMoviesToAppState();
+  }
 
-    final favouriteMoves = _moviesBox.get(HiveConsts.favouriteMoviesKey);
+  void handleSetCachedFavouriteMoviesToAppState() {
+    Box<Movies> moviesBox = HiveService.handleGetFavouriteHiveBox();
 
-    print('hive favourite movies: $favouriteMoves');
+    Movies? favouriteMovies = HiveService.handleGetFavouriteMoviesFromHiveByKey(moviesBox);
+
+    List<hiveResults.Results> cachedFavouriteMovies = [...favouriteMovies?.favouriteMovies ?? []];
+
+    List<Results> favouriteResults = HiveHelper.handleMappingCacheData(cachedFavouriteMovies);
+
+    context.read<MoviesCubit>().handleSetMultipleFavouriteMovies(favouriteResults);
   }
 
   @override

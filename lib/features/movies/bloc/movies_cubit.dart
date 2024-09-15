@@ -1,7 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:imdb_movies_app/consts/hive/hive_consts.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_state.dart';
+import 'package:imdb_movies_app/features/movies/helper/hive/hive_helper.dart';
 import 'package:imdb_movies_app/features/movies/helper/movies_helper.dart';
 import 'package:imdb_movies_app/features/movies/models/genre_response.dart';
+import 'package:imdb_movies_app/features/movies/models/hive/movies.dart';
+import 'package:imdb_movies_app/features/movies/models/hive/results.dart' as hiveResults;
 import 'package:imdb_movies_app/features/movies/models/movie_details.response.dart' as movieDetailsResponse;
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
 import 'package:imdb_movies_app/features/movies/repo/movies_repo.dart';
@@ -23,11 +28,52 @@ class MoviesCubit extends Cubit<MoviesState> {
   }
 
   void handleSetSingleFavouriteMovie(Results movie) {
-    List<Results>? favouriteMovies = [...state.favouriteMovies ?? []];
+    List<Results>? favouriteMoviesState = [...state.favouriteMovies ?? []];
 
-    favouriteMovies.add(movie);
+    Box<Movies> moviesBox = Hive.box<Movies>(HiveConsts.moviesBoxFavourite);
+    Movies? favouriteMoviesHiveRead = moviesBox.get(HiveConsts.favouriteMoviesKey);
+    List<hiveResults.Results> cachedFavouriteMovies = [...favouriteMoviesHiveRead?.favouriteMovies ?? []];
 
-    emit(state.copyWith(favouriteMovies: favouriteMovies));
+    bool isInFavourites = MoviesHelper.checkIfMovieIsInFavourites(favouriteMoviesState, movie.id);
+    bool isInCacheFavourites = MoviesHelper.checkIfMovieIsInCacheFavourites(cachedFavouriteMovies, movie.id);
+
+    if (!isInFavourites) {
+      favouriteMoviesState.add(movie);
+    }
+
+    if (isInFavourites) {
+      favouriteMoviesState.remove(movie);
+    }
+
+    if (!isInCacheFavourites) {
+      hiveResults.Results newResultsObject = HiveHelper.createHiveMovieObject(movie);
+
+      cachedFavouriteMovies.add(newResultsObject);
+    }
+
+    if (isInCacheFavourites) {
+      hiveResults.Results? cachedMovie = MoviesHelper.findMovieInCachedMovies(cachedFavouriteMovies, movie.id);
+
+      if (cachedMovie != null) {
+        cachedFavouriteMovies.remove(cachedMovie);
+      }
+    }
+
+    moviesBox.put(HiveConsts.favouriteMoviesKey, Movies(favouriteMovies: cachedFavouriteMovies));
+
+    Movies? favouriteMoviesHiveRead1 = moviesBox.get(HiveConsts.favouriteMoviesKey);
+
+    List<hiveResults.Results> cachedFavouriteMovies1 = [...favouriteMoviesHiveRead1?.favouriteMovies ?? []];
+
+    cachedFavouriteMovies1.forEach((movie) {
+      print('cached movie: ${movie.title}');
+    });
+
+    print('favouriteMoviesHiveRead 2: $favouriteMoviesHiveRead');
+
+    print('favouriteMovies state: $favouriteMoviesState');
+
+    emit(state.copyWith(favouriteMovies: favouriteMoviesState));
   }
 
   void handleSetMultipleFavouriteMovies(List<Results> movies) {

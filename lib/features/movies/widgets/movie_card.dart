@@ -6,24 +6,20 @@ import 'package:imdb_movies_app/config/router/router_paths.dart';
 import 'package:imdb_movies_app/consts/api/api_path.dart';
 import 'package:imdb_movies_app/consts/assets/assets_path.dart';
 import 'package:imdb_movies_app/features/movies/models/popular_movies_response.dart';
+import 'package:imdb_movies_app/features/movies/widgets/bookmark.dart';
 import 'package:imdb_movies_app/styles/app_dimens.dart';
 import 'package:imdb_movies_app/styles/colors.dart';
 
-class MovieCard extends StatefulWidget {
+class MovieCard extends StatelessWidget {
   const MovieCard({required this.movieData, super.key});
 
   final Results movieData;
 
   @override
-  State<MovieCard> createState() => _MovieCardState();
-}
-
-class _MovieCardState extends State<MovieCard> {
-  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push(RouterPaths.movieDetails, extra: widget.movieData.id.toString());
+        context.push(RouterPaths.movieDetails, extra: movieData.id.toString());
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppDimens.smallSpacing),
@@ -38,7 +34,7 @@ class _MovieCardState extends State<MovieCard> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(AppDimens.minBorderRadius),
                     child: Image.network(
-                      '${ApiPath.POSTER_BASE_URL}${widget.movieData.posterPath}',
+                      '${ApiPath.POSTER_BASE_URL}${movieData.posterPath}',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -59,7 +55,7 @@ class _MovieCardState extends State<MovieCard> {
                         children: [
                           SizedBox(
                             child: Text(
-                              '${widget.movieData.title}',
+                              '${movieData.title}',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: AppDimens.mediumFontSize,
@@ -83,7 +79,7 @@ class _MovieCardState extends State<MovieCard> {
                                   width: 5,
                                 ),
                                 Text(
-                                  '${widget.movieData.voteAverage?.toStringAsFixed(1)} / 10 IMDb',
+                                  '${movieData.voteAverage?.toStringAsFixed(1)} / 10 IMDb',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: AppDimens.smallFontSize,
@@ -97,8 +93,8 @@ class _MovieCardState extends State<MovieCard> {
                           SizedBox(
                             child: Wrap(
                               children: [
-                                if (widget.movieData.genreNames != null)
-                                  ...widget.movieData.genreNames!.map(
+                                if (movieData.genreNames != null)
+                                  ...movieData.genreNames!.map(
                                     (genreName) {
                                       return Padding(
                                         padding: const EdgeInsets.only(
@@ -135,11 +131,9 @@ class _MovieCardState extends State<MovieCard> {
                 ],
               ),
             ),
-            SvgPicture.asset(
-              AppAssets.bookmarkEmptyIcon,
-              width: AppDimens.mediumIconSize,
-              height: AppDimens.mediumIconSize,
-            ),
+            Bookmark(
+              movieData: movieData,
+            )
           ],
         ),
       ),

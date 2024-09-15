@@ -55,10 +55,10 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 3,
+                  itemCount: state.favouriteMovies?.length,
                   itemBuilder: (context, index) {
                     return MovieCard(
-                      movieData: state.moviesPopularResults![index],
+                      movieData: state.favouriteMovies![index],
                     );
                   },
                 ),
