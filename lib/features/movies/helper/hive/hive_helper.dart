@@ -37,4 +37,23 @@ class HiveHelper {
 
     return results;
   }
+
+  static List<hiveResults.Results> handleMappingPopularMoviesToCacheDataModel(List<Results> popularMovies) {
+    List<hiveResults.Results> results = popularMovies
+        .map((movie) => hiveResults.Results(
+              id: movie.id,
+              genreIds: movie.genreIds,
+              genreNames: movie.genreNames,
+              overview: movie.overview,
+              originalTitle: movie.originalTitle,
+              title: movie.title,
+              posterPath: movie.posterPath,
+              voteAverage: movie.voteAverage,
+              popularity: movie.popularity,
+              voteCount: movie.voteCount,
+            ))
+        .toList();
+
+    return results;
+  }
 }

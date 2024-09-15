@@ -12,6 +12,7 @@ import 'package:imdb_movies_app/features/movies/models/popular_movies_response.d
 import 'package:imdb_movies_app/features/movies/repo/movies_repo.dart';
 import 'package:imdb_movies_app/features/movies/utils/movies_util.dart';
 import 'package:imdb_movies_app/models/response.dart';
+import 'package:imdb_movies_app/utils/services/hive/hive_service.dart';
 
 class MoviesCubit extends Cubit<MoviesState> {
   MoviesCubit() : super(MoviesState.initial());
@@ -30,8 +31,8 @@ class MoviesCubit extends Cubit<MoviesState> {
   void handleSetSingleFavouriteMovie(Results movie) {
     List<Results>? favouriteMoviesState = [...state.favouriteMovies ?? []];
 
-    Box<Movies> moviesBox = Hive.box<Movies>(HiveConsts.moviesBoxFavourite);
-    Movies? favouriteMoviesHiveRead = moviesBox.get(HiveConsts.favouriteMoviesKey);
+    Box<Movies> moviesBox = HiveService.handleGetHiveBox();
+    Movies? favouriteMoviesHiveRead = HiveService.handleGetFavouriteMoviesFromHiveByKey(moviesBox);
     List<hiveResults.Results> cachedFavouriteMovies = [...favouriteMoviesHiveRead?.favouriteMovies ?? []];
 
     bool isInFavourites = MoviesHelper.checkIfMovieIsInFavourites(favouriteMoviesState, movie.id);
@@ -61,18 +62,6 @@ class MoviesCubit extends Cubit<MoviesState> {
 
     moviesBox.put(HiveConsts.favouriteMoviesKey, Movies(favouriteMovies: cachedFavouriteMovies));
 
-    Movies? favouriteMoviesHiveRead1 = moviesBox.get(HiveConsts.favouriteMoviesKey);
-
-    List<hiveResults.Results> cachedFavouriteMovies1 = [...favouriteMoviesHiveRead1?.favouriteMovies ?? []];
-
-    cachedFavouriteMovies1.forEach((movie) {
-      print('cached movie: ${movie.title}');
-    });
-
-    print('favouriteMoviesHiveRead 2: $favouriteMoviesHiveRead');
-
-    print('favouriteMovies state: $favouriteMoviesState');
-
     emit(state.copyWith(favouriteMovies: favouriteMoviesState));
   }
 
@@ -82,6 +71,14 @@ class MoviesCubit extends Cubit<MoviesState> {
     favouriteMovies.addAll(movies);
 
     emit(state.copyWith(favouriteMovies: favouriteMovies));
+  }
+
+  void handleSetMultiplePopularMovies(List<Results> movies) {
+    List<Results>? popularMovies = [...state.cachedPopularMovies ?? []];
+
+    popularMovies.addAll(movies);
+
+    emit(state.copyWith(cachedPopularMovies: popularMovies));
   }
 
   Future<bool> handleGetGenres() async {
@@ -131,6 +128,8 @@ class MoviesCubit extends Cubit<MoviesState> {
     int nextPage = page + 1;
 
     print('page: $page, results: ${results.length}, totalPages: $totalPages, totalResults: $totalResults');
+
+    HiveService.handleCachePopularMovies(popularMoviesWithGenreNames, page, results);
 
     emit(state.copyWith(
       moviesPopularPage: nextPage,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:imdb_movies_app/features/core/auth/bloc/auth_cubit.dart';
 import 'package:imdb_movies_app/features/core/auth/repository/auth_repository.dart';
+import 'package:imdb_movies_app/features/internet_connection/bloc/internet_connection_cubit.dart';
 import 'package:imdb_movies_app/features/movies/bloc/movies_cubit.dart';
 import 'package:imdb_movies_app/features/movies/repo/movies_repo.dart';
 
@@ -39,6 +40,9 @@ class BlocProvidersRepositories extends StatelessWidget {
           ),
           BlocProvider<MoviesCubit>(
             create: (context) => MoviesCubit(),
+          ),
+          BlocProvider<InternetConnectionCubit>(
+            create: (context) => InternetConnectionCubit(),
           ),
         ],
         child: child,

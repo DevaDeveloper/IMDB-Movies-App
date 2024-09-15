@@ -89,10 +89,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
               Expanded(
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollNotification) {
-                    if (MoviesHelper.isFetchMorePopularMoviesValid(
-                        scrollNotification, isLoadingMore, state.moviesPopularTotalPages ?? 1, state.moviesPopularPage ?? 1)) {
-                      handleFetchPopularMovies();
-                    }
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      if (MoviesHelper.isFetchMorePopularMoviesValid(
+                          scrollNotification, isLoadingMore, state.moviesPopularTotalPages ?? 1, state.moviesPopularPage ?? 1)) {
+                        handleFetchPopularMovies();
+                      }
+                    });
                     return true;
                   },
                   child: ListView.builder(

@@ -7,7 +7,7 @@ class BotToastNotifications {
     BotToast.showSimpleNotification(
       title: title,
       hideCloseButton: true,
-      titleStyle: TextStyle(color: AppColorsLight.errorBackgroundColor),
+      titleStyle: TextStyle(color: AppColorsLight.botToastForegroundColor),
       backgroundColor: AppColorsLight.errorBackgroundColor,
     );
   }

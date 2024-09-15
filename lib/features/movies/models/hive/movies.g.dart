@@ -18,15 +18,18 @@ class MoviesAdapter extends TypeAdapter<Movies> {
     };
     return Movies(
       favouriteMovies: (fields[0] as List?)?.cast<Results>(),
+      popularMovies: (fields[1] as List?)?.cast<Results>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Movies obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.favouriteMovies);
+      ..write(obj.favouriteMovies)
+      ..writeByte(1)
+      ..write(obj.popularMovies);
   }
 
   @override

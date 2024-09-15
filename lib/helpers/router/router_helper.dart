@@ -4,8 +4,6 @@ class RouterHelper {
   static String getCurrentRoute() {
     String currentRoute = mgRouter.routeInformationProvider.value.uri.toString();
 
-    print('currentRoute: ${currentRoute}');
-
     return currentRoute;
   }
 }
