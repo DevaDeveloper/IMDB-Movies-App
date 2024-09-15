@@ -2,6 +2,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppDimens {
   // Spacings
+  static const double minSpacing = 2.0;
   static const double extraSmallSpacing = 5.0;
   static const double smallSpacing = 10.0;
   static const double secondarySmallSpacing = 15.0;
@@ -9,7 +10,6 @@ class AppDimens {
   static const double extraMediumSpacing = 30.0;
 
   // Paddings
-
   static const double extraSmallPadding = 4.0;
   static const double smallPadding = 8.0;
   static const double mediumPadding = 30.0;
